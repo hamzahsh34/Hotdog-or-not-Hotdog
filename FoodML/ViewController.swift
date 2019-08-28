@@ -38,7 +38,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let model = try? VNCoreMLModel(for: Inceptionv3().model)
         let request = VNCoreMLRequest(model: model!) { (request, error) in
             let results = request.results as? [VNClassificationObservation]
+            
+            // First result has highest confidence, string of first value in array will contain hotdog or wont
+            if let firstResult = results?.first {
+                if firstResult.identifier.contains("hotdog") {
+                    self.navigationItem.title = "Hotdog!"
+                } else {
+                    self.navigationItem.title = "Not Hotdog!"
+                }
+            }
+        
         }
+        
+        
         
         let handler = VNImageRequestHandler(ciImage: image)
         do {
